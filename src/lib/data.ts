@@ -14,6 +14,7 @@ export interface Product {
 export interface Category {
   id: number;
   name: string;
+  slug: string;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -45,6 +46,7 @@ export const categories: Category[] = [
   {
     id: 1,
     name: "Makanan",
+    slug: "makanan",
     is_active: true,
     created_at: "2023-04-01 07:00:00",
     updated_at: "2023-04-01 07:00:00",
@@ -52,6 +54,7 @@ export const categories: Category[] = [
   {
     id: 2,
     name: "Minuman",
+    slug: "minuman",
     is_active: true,
     created_at: "2023-04-01 07:00:00",
     updated_at: "2023-04-01 07:00:00",
@@ -59,6 +62,7 @@ export const categories: Category[] = [
   {
     id: 3,
     name: "Obat",
+    slug: "obat",
     is_active: true,
     created_at: "2023-04-01 07:00:00",
     updated_at: "2023-04-01 07:00:00",

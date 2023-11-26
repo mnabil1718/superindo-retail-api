@@ -1,51 +1,11 @@
+import Footer from "@/components/Footer";
 import { ProductCard } from "@/components/product/product-card";
 import ProductDetails from "@/components/product/product-details";
 import { Product, Variant, products, variants } from "@/lib/data";
+import { getProduct, getProductVariants } from "@/lib/fetches";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Suspense, useState } from "react";
-
-async function getProduct(slug: string): Promise<Product | undefined> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/products/${slug}`,
-      {
-        method: "GET",
-        next: {
-          revalidate: 5,
-        },
-      }
-    );
-    const data = await response.json();
-
-    return data.product;
-  } catch (error) {
-    console.log(error);
-    return undefined;
-  }
-}
-
-async function getProductVariants(
-  product_id: number | undefined
-): Promise<Variant[]> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/variants/${product_id}`,
-      {
-        method: "GET",
-        next: {
-          revalidate: 5,
-        },
-      }
-    );
-    const data = await response.json();
-
-    return data.variants;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
 
 export default async function Product({
   params: { slug },
@@ -75,7 +35,9 @@ export default async function Product({
           <ProductDetails product={product} variants={productVariants} />
         </div>
       </div>
-      <Suspense>{/* <RelatedProducts id={product.id} /> */}</Suspense>
+      <Suspense>
+        <Footer />
+      </Suspense>
     </div>
   );
 }

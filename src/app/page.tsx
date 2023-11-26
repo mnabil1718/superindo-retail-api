@@ -1,47 +1,27 @@
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
-import { ProductCard } from "@/components/product/product-card";
-import { Product } from "@/lib/data";
+import ProductGrid from "@/components/product/product-grid";
+import ProductGridSkeleton from "@/components/skeleton/ProductGridSkeleton";
+import { getProducts } from "@/lib/fetches";
 import { Suspense } from "react";
-
-async function getProducts(): Promise<Product[]> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/products`,
-      {
-        method: "GET",
-        next: {
-          revalidate: 5,
-        },
-      }
-    );
-    const data = await response.json();
-    return data.products;
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-}
 
 export default async function Home() {
   const products = await getProducts();
   return (
     <div className="relative mx-auto max-w-screen-xl p-3">
       <Hero />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {products.length < 1 ? (
-          <p>No Data...</p>
-        ) : (
-          products.map((product: Product, index: number) => {
-            return (
-              <div className="col-span-1" key={index}>
-                <Suspense>
-                  <ProductCard product={product} />
-                </Suspense>
-              </div>
-            );
-          })
-        )}
-      </div>
+      {products.length < 1 ? (
+        <p>No Data...</p>
+      ) : (
+        <>
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <ProductGrid products={products} />
+          </Suspense>
+          <Suspense>
+            <Footer />
+          </Suspense>
+        </>
+      )}
     </div>
   );
 }
