@@ -5,34 +5,46 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { Suspense, useState } from "react";
 
-async function getProduct(slug: string): Promise<Product> {
-  const response = await fetch(
-    `https://superindo-retail.vercel.app/api/products/${slug}`,
-    {
-      method: "GET",
-      next: {
-        revalidate: 5,
-      },
-    }
-  );
-  const data = await response.json();
+async function getProduct(slug: string): Promise<Product | undefined> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/products/${slug}`,
+      {
+        method: "GET",
+        next: {
+          revalidate: 5,
+        },
+      }
+    );
+    const data = await response.json();
 
-  return data.product;
+    return data.product;
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
 }
 
-async function getProductVariants(product_id: number): Promise<Variant[]> {
-  const response = await fetch(
-    `https://superindo-retail.vercel.app/api/variants/${product_id}`,
-    {
-      method: "GET",
-      next: {
-        revalidate: 5,
-      },
-    }
-  );
-  const data = await response.json();
+async function getProductVariants(
+  product_id: number | undefined
+): Promise<Variant[]> {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/variants/${product_id}`,
+      {
+        method: "GET",
+        next: {
+          revalidate: 5,
+        },
+      }
+    );
+    const data = await response.json();
 
-  return data.variants;
+    return data.variants;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 }
 
 export default async function Product({
@@ -41,7 +53,7 @@ export default async function Product({
   params: { slug: string };
 }) {
   const product = await getProduct(slug);
-  const productVariants = await getProductVariants(product.id);
+  const productVariants = await getProductVariants(product?.id);
 
   return (
     <div className="mx-auto max-w-screen-xl px-4">
@@ -52,8 +64,8 @@ export default async function Product({
               className="h-full w-full object-contain"
               fill
               sizes="(min-width: 1024px) 66vw, 100vw"
-              alt={product.name}
-              src={product.image}
+              alt={product?.name ?? ""}
+              src={product?.image ?? ""}
               priority={true}
             />
           </div>

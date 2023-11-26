@@ -1,23 +1,25 @@
 import Hero from "@/components/Hero";
 import { ProductCard } from "@/components/product/product-card";
 import { Product } from "@/lib/data";
-import { useCartStore } from "@/store/zustand";
 import { Suspense } from "react";
-import { useStore } from "zustand";
 
 async function getProducts(): Promise<Product[]> {
-  const response = await fetch(
-    "https://superindo-retail.vercel.app/api/products",
-    {
-      method: "GET",
-      next: {
-        revalidate: 5,
-      },
-    }
-  );
-  const data = await response.json();
-
-  return data.products;
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_HOSTNAME_URL}/api/products`,
+      {
+        method: "GET",
+        next: {
+          revalidate: 5,
+        },
+      }
+    );
+    const data = await response.json();
+    return data.products;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 }
 
 export default async function Home() {
