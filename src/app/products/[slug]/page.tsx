@@ -6,12 +6,15 @@ import { useRouter } from "next/router";
 import { Suspense, useState } from "react";
 
 async function getProduct(slug: string): Promise<Product> {
-  const response = await fetch(`http://localhost:3000/api/products/${slug}`, {
-    method: "GET",
-    next: {
-      revalidate: 5,
-    },
-  });
+  const response = await fetch(
+    `https://superindo-retail.vercel.app/api/products/${slug}`,
+    {
+      method: "GET",
+      next: {
+        revalidate: 5,
+      },
+    }
+  );
   const data = await response.json();
 
   return data.product;
@@ -19,7 +22,7 @@ async function getProduct(slug: string): Promise<Product> {
 
 async function getProductVariants(product_id: number): Promise<Variant[]> {
   const response = await fetch(
-    `http://localhost:3000/api/variants/${product_id}`,
+    `https://superindo-retail.vercel.app/api/variants/${product_id}`,
     {
       method: "GET",
       next: {

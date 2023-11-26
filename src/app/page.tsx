@@ -6,12 +6,15 @@ import { Suspense } from "react";
 import { useStore } from "zustand";
 
 async function getProducts(): Promise<Product[]> {
-  const response = await fetch("http://localhost:3000/api/products", {
-    method: "GET",
-    next: {
-      revalidate: 5,
-    },
-  });
+  const response = await fetch(
+    "https://superindo-retail.vercel.app/api/products",
+    {
+      method: "GET",
+      next: {
+        revalidate: 5,
+      },
+    }
+  );
   const data = await response.json();
 
   return data.products;
