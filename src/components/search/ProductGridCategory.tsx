@@ -1,9 +1,13 @@
 import { ProductCard } from "@/components/product/product-card";
 import { Product, products } from "@/lib/data";
-import { getProducts } from "@/lib/fetches";
+import {
+  getProducts,
+  getProductsByCategory,
+  searchProducts,
+} from "@/lib/fetches";
 
-const ProductGrid = async () => {
-  const products = await getProducts();
+const ProductGridCategory = async ({ categoryId }: { categoryId: string }) => {
+  const products = await getProductsByCategory(categoryId);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {products.length < 1 ? (
@@ -21,4 +25,4 @@ const ProductGrid = async () => {
   );
 };
 
-export default ProductGrid;
+export default ProductGridCategory;

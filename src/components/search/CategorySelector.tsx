@@ -1,15 +1,14 @@
 import { Category } from "@/lib/data";
+import { getCategories, getCategory } from "@/lib/fetches";
 import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
 
-const CategorySelector = ({
-  categories,
-  currentCategory,
-}: {
-  categories: Category[];
-  currentCategory?: Category;
-}) => {
+const CategorySelector = async ({ categoryId }: { categoryId?: string }) => {
+  const currentCategory = categoryId
+    ? await getCategory(categoryId)
+    : undefined;
+  const categories = await getCategories();
   return (
     <div className="flex flex-wrap w-full items-center gap-2">
       <Link

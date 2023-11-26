@@ -1,4 +1,4 @@
-import { Category, Product, Variant } from "./data";
+import { Category, Product, Variant, products as data } from "./data";
 
 // Not combined with getProducts because of no caching
 export async function searchProducts(q: string): Promise<Product[]> {
