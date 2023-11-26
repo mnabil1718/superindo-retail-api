@@ -1,7 +1,6 @@
 "use client";
 import { CartItem, Product, Variant } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
-import clsx from "clsx";
 import { useState } from "react";
 import VariantSelector from "./variant-selector";
 import { PlusIcon } from "@heroicons/react/24/outline";
